@@ -1,0 +1,31 @@
+{
+  "compilerOptions": {
+    /* Language and Environment */
+    "target": "es2016",                       // Define el estándar de JavaScript que se va a emitir.
+    "module": "commonjs",                     // Usa el sistema de módulos de Node.js.
+    "jsx": "react",                           // Habilita JSX para React.
+    "esModuleInterop": true,                  // Permite interoperabilidad entre ES6 y CommonJS.
+    "forceConsistentCasingInFileNames": true, // Asegura que las rutas respeten mayúsculas y minúsculas.
+    "skipLibCheck": true,                     // Omitir la revisión de archivos de tipo `.d.ts`.
+    
+    /* Modules */
+    "moduleResolution": "node",               // Permite resolver módulos usando el estilo de Node.js.
+    "resolveJsonModule": true,                // Habilita la importación de archivos JSON.
+
+    /* Type Checking */
+    "strict": true,                           // Habilita todas las opciones de verificación estricta.
+
+    /* Opciones adicionales */
+    "allowSyntheticDefaultImports": true,     // Permite importar módulos sin un `default` export explícito.
+
+    /* Emit */
+    // "noEmit": true,                        // Puedes habilitarlo si no quieres que TypeScript genere archivos `.js`.
+
+    /* Paths (Opcional) */
+    // Si usas alias en tus importaciones (ej. `@components` para la carpeta `components`), puedes configurarlos aquí.
+    // "paths": {
+    //   "@components/*": ["src/components/*"]
+    // }
+  },
+  "include": ["src"]  // Incluye todos los archivos dentro de la carpeta `src` para la compilación.
+}
