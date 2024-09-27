@@ -1,6 +1,6 @@
 // Tipos de las props del componente SearchBar
 export interface SearchBarProps {
-  onSearch: (query: string) => void; // La función onSearch recibe un string
+  onSearch: (query: string) => void;
 }
 
 // Tipos para los datos de los productos que recibimos de la API de Mercado Libre
@@ -23,4 +23,13 @@ export interface ProductSearchResponse {
     lastname: string;
   };
   items: Product[];
+}
+
+export interface ProductCardProps
+  extends Pick<Product, 'title' | 'picture' | 'price' | 'condition'> {
+  location: string;
+}
+
+export interface ProductListProps {
+  products: Product[];
 }
