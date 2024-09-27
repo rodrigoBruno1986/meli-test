@@ -17,6 +17,7 @@ export interface Product {
   free_shipping: boolean;
 }
 
+// Tipos para la respuesta de búsqueda de productos
 export interface ProductSearchResponse {
   author: {
     name: string;
@@ -25,11 +26,37 @@ export interface ProductSearchResponse {
   items: Product[];
 }
 
+// Props para el componente ProductCard
 export interface ProductCardProps
   extends Pick<Product, 'title' | 'picture' | 'price' | 'condition'> {
   location: string;
+  onClick?: () => void; // Añadido para manejar el clic en el card
 }
 
+// Props para el componente ProductList
 export interface ProductListProps {
   products: Product[];
+  categories: string[];
+}
+
+// Nuevos tipos para las consultas y parámetros en el servidor
+export interface Query {
+  q: string; // Para la búsqueda de productos
+}
+
+export interface Params {
+  id: string; // Para los detalles del producto
+}
+
+export const fetchProductDetails = async (id: string) => {
+  const response = await fetch(`http://localhost:3001/api/items/${id}`);
+  if (!response.ok) {
+    throw new Error('Error al obtener los detalles del producto');
+  }
+  return await response.json();
+};
+
+export interface ProductDetails extends Product {
+  sold_quantity: number;
+  description: string;
 }

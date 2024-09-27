@@ -1,10 +1,13 @@
+
 .card {
   border: 1px solid #ddd;
   border-radius: 8px;
   padding: 16px;
   margin: 16px;
-  max-width: 300px;
+  display: flex;
+  align-items: center;
   text-align: left;
+  width: 100%;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   transition: transform 0.2s ease-in-out;
 }
@@ -13,14 +16,19 @@
   transform: scale(1.05);
 }
 
+.card-image-wrapper {
+  width: 100%;
+  max-width: 250px; /* Ajustamos el tamaño de la imagen */
+}
+
 .card-image {
   width: 100%;
   height: auto;
-  border-radius: 8px 8px 0 0;
+  border-radius: 8px;
 }
 
 .card-content {
-  padding: 12px 0;
+  padding: 12px 25px;
 }
 
 .card-content h3 {
@@ -38,4 +46,9 @@
   color: #000;
   font-weight: bold;
   margin-bottom: 8px;
+}
+
+.card-content p.location {
+  color: #888;
+  font-size: 0.9rem;
 }

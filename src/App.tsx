@@ -1,21 +1,31 @@
 import React, { useState } from 'react';
 import SearchBar from '../src/components/SearchBar/SearchBar';
 import { Product } from './utils/types';
+import {
+  BrowserRouter as Router,
+  Route,
+  Routes,
+  useNavigate,
+} from 'react-router-dom';
 import ProductList from './components/ProductList/ProductList';
-import { searchProducts } from './services/api'; // Importamos la función de la API
+import ProductDescription from './components/ProductDescription/ProductDescription';
+import { searchProducts } from './services/api';
 import './App.css';
 
 const App: React.FC = () => {
   const [searchResults, setSearchResults] = useState<Product[]>([]);
+  const [categories, setCategories] = useState<string[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const navigate = useNavigate();
 
   const handleSearch = async (query: string) => {
     console.log('Buscando productos para:', query);
     setIsLoading(true);
 
     try {
-      const products = await searchProducts(query); // Usamos la función de búsqueda desde api.ts
+      const products = await searchProducts(query);
       setSearchResults(products);
+      navigate('/');
     } catch (error) {
       console.error('Error al buscar los productos', error);
     } finally {
@@ -32,7 +42,13 @@ const App: React.FC = () => {
       {isLoading ? (
         <p>Cargando productos...</p>
       ) : (
-        <ProductList products={searchResults} />
+        <Routes>
+          <Route
+            path='/'
+            element={<ProductList products={searchResults} categories={[]} />}
+          />
+          <Route path='/items/:id' element={<ProductDescription />} />
+        </Routes>
       )}
     </div>
   );

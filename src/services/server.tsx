@@ -1,29 +1,31 @@
 import express, { Request, Response } from 'express';
 import axios from 'axios';
+import { Query, Params } from '../utils/types'; // Asegúrate de ajustar la ruta según sea necesario
 
 const app = express();
 
 app.use(express.json());
 
-// Endpoint para buscar productos
-app.get('/api/items', async (req: Request, res: Response) => {
+app.get('/api/items', async (req: Request<Query>, res: Response) => {
   const { q } = req.query;
   try {
     const response = await axios.get(
       `https://api.mercadolibre.com/sites/MLA/search?q=${q}`
     );
+
     const items = response.data.results.slice(0, 4).map((item: any) => ({
       id: item.id,
       title: item.title,
       price: {
         currency: item.currency_id,
-        amount: Math.floor(item.price),
-        decimals: (item.price % 1).toFixed(2),
+        amount: Math.floor(item.data.price), // Asegúrate de que amount sea un número
+        decimals: Math.round((item.data.price % 1) * 100),
       },
       picture: item.thumbnail,
       condition: item.condition,
       free_shipping: item.shipping.free_shipping,
     }));
+
     res.json({
       author: { name: 'TuNombre', lastname: 'TuApellido' },
       items,
@@ -33,8 +35,7 @@ app.get('/api/items', async (req: Request, res: Response) => {
   }
 });
 
-// Endpoint para obtener detalle del producto
-app.get('/api/items/:id', async (req: Request, res: Response) => {
+app.get('/api/items/:id', async (req: Request<Params>, res: Response) => {
   const { id } = req.params;
   try {
     const itemResponse = await axios.get(

@@ -1,16 +1,15 @@
 import React from 'react';
-import ReactDOM from 'react-dom'; // Usa 'react-dom' en lugar de 'react-dom/client'
+import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
-import reportWebVitals from './reportWebVitals';
+import { BrowserRouter } from 'react-router-dom';
 
-// Usa ReactDOM.render para React 17
-ReactDOM.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
-  document.getElementById('root')
+const root = ReactDOM.createRoot(
+  document.getElementById('root') as HTMLElement
 );
 
-// Este código es para medir el rendimiento de tu aplicación
-reportWebVitals();
+root.render(
+  <BrowserRouter>
+    <App />
+  </BrowserRouter>
+);

@@ -7,16 +7,20 @@ const ProductCard: React.FC<ProductCardProps> = ({
   price,
   title,
   location,
+  onClick,
 }) => {
   return (
-    <div className='card'>
-      <img src={picture} alt={title} className='card-picture' />
+    <div className='card' onClick={onClick}>
+      <div className='card-image-wrapper'>
+        <img src={picture} alt={title} className='card-image' />
+      </div>
       <div className='card-content'>
-        <h3>{title}</h3>
-        <p>
-          Precio: {price.currency} ${price.amount.toFixed(2)}
+        <p className='price'>
+          {price.currency} ${price.amount.toFixed(2)}
         </p>
-        <p>Ubicación: {location}</p>
+        <h3>{title}</h3>
+
+        <p>{location}</p>
       </div>
     </div>
   );

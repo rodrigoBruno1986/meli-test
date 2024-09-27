@@ -1,9 +1,18 @@
 import axios from 'axios';
-import { Product } from '../utils/types';
+import { Product, ProductDetails } from '../utils/types';
+
 const API_URL = process.env.REACT_APP_API_URL;
 
+// Función para buscar productos
 export const searchProducts = async (query: string): Promise<Product[]> => {
   const response = await axios.get(`${API_URL}${query}`);
+  console.log('Respuesta completa de la API:', response.data);
+
+  // Asumiendo que la categoría se encuentra en response.data.filters
+  const categories =
+    response.data.filters
+      .find((filter: any) => filter.id === 'category')
+      ?.values.map((value: any) => value.name) || [];
 
   const products = response.data.results.slice(0, 4).map((item: any) => ({
     id: item.id,
@@ -19,4 +28,35 @@ export const searchProducts = async (query: string): Promise<Product[]> => {
   }));
 
   return products;
+};
+
+// Función para obtener los detalles de un producto
+export const fetchProductDetails = async (
+  id: string
+): Promise<ProductDetails> => {
+  const response = await axios.get(`https://api.mercadolibre.com/items/${id}`);
+  const descriptionResponse = await axios.get(
+    `https://api.mercadolibre.com/items/${id}/description`
+  );
+
+  if (!response.data || !descriptionResponse.data) {
+    throw new Error('No se pudieron obtener los detalles del producto.');
+  }
+
+  const productDetails = {
+    id: response.data.id,
+    title: response.data.title,
+    price: {
+      currency: response.data.currency_id,
+      amount: Math.floor(response.data.price),
+      decimals: Math.round((response.data.price % 1) * 100),
+    },
+    picture: response.data.pictures[0].secure_url,
+    condition: response.data.condition,
+    free_shipping: response.data.shipping.free_shipping,
+    sold_quantity: response.data.sold_quantity,
+    description: descriptionResponse.data.plain_text,
+  };
+
+  return productDetails;
 };
