@@ -26,6 +26,10 @@ export interface ProductSearchResponse {
   items: Product[];
 }
 
+export interface ProductSearchResult {
+  products: Product[];
+  categories: string[];
+}
 // Props para el componente ProductCard
 export interface ProductCardProps
   extends Pick<Product, 'title' | 'picture' | 'price' | 'condition'> {
@@ -36,7 +40,6 @@ export interface ProductCardProps
 // Props para el componente ProductList
 export interface ProductListProps {
   products: Product[];
-  categories: string[];
 }
 
 // Nuevos tipos para las consultas y parámetros en el servidor

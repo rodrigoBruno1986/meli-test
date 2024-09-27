@@ -1,6 +1,8 @@
+// App.tsx
+
 import React, { useState } from 'react';
-import SearchBar from '../src/components/SearchBar/SearchBar';
-import { Product } from './utils/types';
+import SearchBar from './components/SearchBar/SearchBar';
+import { Product, ProductSearchResult } from './utils/types'; // Asegúrate de importar el nuevo tipo
 import {
   BrowserRouter as Router,
   Route,
@@ -10,6 +12,7 @@ import {
 import ProductList from './components/ProductList/ProductList';
 import ProductDescription from './components/ProductDescription/ProductDescription';
 import { searchProducts } from './services/api';
+import Breadcrumb from './components/Breadcrumb/Breadcrumb';
 import './App.css';
 
 const App: React.FC = () => {
@@ -23,9 +26,12 @@ const App: React.FC = () => {
     setIsLoading(true);
 
     try {
-      const products = await searchProducts(query);
+      const { products, categories: newCategories }: ProductSearchResult =
+        await searchProducts(query); // Asegúrate de que estás usando el tipo correcto
       setSearchResults(products);
-      navigate('/');
+      console.log('Categorías obtenidas:', newCategories); // Solo establecemos los productos
+      setCategories(newCategories); // Establece las categorías también
+      navigate('/'); // Redirige a la página de inicio
     } catch (error) {
       console.error('Error al buscar los productos', error);
     } finally {
@@ -45,7 +51,13 @@ const App: React.FC = () => {
         <Routes>
           <Route
             path='/'
-            element={<ProductList products={searchResults} categories={[]} />}
+            element={
+              <>
+                <Breadcrumb categories={categories} />
+
+                <ProductList products={searchResults} />
+              </>
+            }
           />
           <Route path='/items/:id' element={<ProductDescription />} />
         </Routes>

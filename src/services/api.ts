@@ -1,10 +1,14 @@
+// services/api.ts
+
 import axios from 'axios';
-import { Product, ProductDetails } from '../utils/types';
+import { Product, ProductDetails, ProductSearchResult } from '../utils/types';
 
 const API_URL = process.env.REACT_APP_API_URL;
 
 // Función para buscar productos
-export const searchProducts = async (query: string): Promise<Product[]> => {
+export const searchProducts = async (
+  query: string
+): Promise<ProductSearchResult> => {
   const response = await axios.get(`${API_URL}${query}`);
   console.log('Respuesta completa de la API:', response.data);
 
@@ -13,6 +17,8 @@ export const searchProducts = async (query: string): Promise<Product[]> => {
     response.data.filters
       .find((filter: any) => filter.id === 'category')
       ?.values.map((value: any) => value.name) || [];
+
+  console.log('ssss', categories);
 
   const products = response.data.results.slice(0, 4).map((item: any) => ({
     id: item.id,
@@ -27,7 +33,7 @@ export const searchProducts = async (query: string): Promise<Product[]> => {
     free_shipping: item.shipping.free_shipping,
   }));
 
-  return products;
+  return { products, categories }; // Devuelve un objeto con ambas propiedades
 };
 
 // Función para obtener los detalles de un producto

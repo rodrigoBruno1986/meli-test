@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { fetchProductDetails } from '../../services/api';
-
 import { ProductDetails } from '../../utils/types';
 import './style.css';
 
